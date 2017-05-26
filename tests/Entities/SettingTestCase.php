@@ -24,11 +24,6 @@ abstract class SettingTestCase extends TestCase
     protected $aValue;
 
     /**
-     * @var array[]
-     */
-    protected static $invalidValues;
-
-    /**
      * Should return a valid initial value.
      *
      * @return mixed
