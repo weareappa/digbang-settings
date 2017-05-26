@@ -61,7 +61,7 @@ class SettingsServiceProvider extends ServiceProvider
      */
     protected function resources(): void
     {
-        $path = __DIR__.'/resources';
+        $path = dirname(__DIR__).'/resources';
 
         $this->loadTranslationsFrom("$path/lang", static::PACKAGE);
         $this->loadViewsFrom("$path/views", static::PACKAGE);
