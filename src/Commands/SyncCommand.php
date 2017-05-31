@@ -19,7 +19,7 @@ class SyncCommand extends Command
 
     public function handle(Repository $config, SettingsRepository $settingsRepository, EntityManagerInterface $entityManager)
     {
-        $exit = 0;
+        $exitStatus = 0;
 
         $existing = $settingsRepository->all();
         $configured = new Collection($config->get('settings.settings'));
@@ -43,25 +43,25 @@ class SyncCommand extends Command
                     Arr::get($setting, 'nullable', false)
                 );
 
-                if ($this->option('dry-run')) {
-                    $this->info("Added [$key]: ");
-                    $this->info(print_r($current, true));
-                } else {
+                $this->info("Added [$key].");
+                $this->info(print_r($current, true), 'vvv');
+
+                if (!$this->option('dry-run')) {
                     $entityManager->persist($current);
                 }
             } catch (\InvalidArgumentException $exception) {
-                $this->error("Invalid configuration for setting [$key]: ");
-                $this->error($exception->getMessage());
+                $this->error("Invalid configuration for setting [$key].");
+                $this->error($exception->getMessage(), 'v');
 
-                $exit++;
+                $exitStatus++;
             }
         }
 
         foreach ($removed as $key => $setting) {
-            if ($this->option('dry-run')) {
-                $this->info("Removed [$key].");
-                $this->info(print_r($setting, true));
-            } else {
+            $this->warn("Removed [$key].");
+            $this->warn(print_r($setting, true), 'vvv');
+
+            if (!$this->option('dry-run')) {
                 $entityManager->remove($setting);
             }
         }
@@ -70,7 +70,7 @@ class SyncCommand extends Command
             $entityManager->flush();
         }
 
-        return $exit;
+        return $exitStatus;
     }
 
     private function validConfig($setting)
@@ -78,19 +78,19 @@ class SyncCommand extends Command
         $errors = [];
 
         if (!array_key_exists('type', $setting)) {
-            $errors[] = 'Missing key: [type].';
+            $errors[] = ' - Missing key: [type].';
         } elseif (!class_exists($setting['type'])) {
-            $errors[] = sprintf('Class [%s] does not exist.', $setting['type']);
+            $errors[] = s - printf('Class [%s] does not exist.', $setting['type']);
         } elseif (!is_subclass_of($setting['type'], Setting::class)) {
-            $errors[] = sprintf('Class [%s] must extend [%s].', $setting['type'], Setting::class);
+            $errors[] = s - printf('Class [%s] must extend [%s].', $setting['type'], Setting::class);
         }
 
         if (!array_key_exists('name', $setting)) {
-            $errors[] = 'Missing key: [name].';
+            $errors[] = ' - Missing key: [name].';
         }
 
         if (!array_key_exists('default', $setting) && !Arr::get($setting, 'nullable')) {
-            $errors[] = 'Cannot create a not-null setting without default value.';
+            $errors[] = ' - Cannot create a not-null setting without default value.';
         }
 
         if (!empty($errors)) {
