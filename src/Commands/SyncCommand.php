@@ -80,9 +80,9 @@ class SyncCommand extends Command
         if (!array_key_exists('type', $setting)) {
             $errors[] = ' - Missing key: [type].';
         } elseif (!class_exists($setting['type'])) {
-            $errors[] = s - printf('Class [%s] does not exist.', $setting['type']);
+            $errors[] = sprintf(' - Class [%s] does not exist.', $setting['type']);
         } elseif (!is_subclass_of($setting['type'], Setting::class)) {
-            $errors[] = s - printf('Class [%s] must extend [%s].', $setting['type'], Setting::class);
+            $errors[] = sprintf(' - Class [%s] must extend [%s].', $setting['type'], Setting::class);
         }
 
         if (!array_key_exists('name', $setting)) {
