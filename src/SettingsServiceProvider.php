@@ -41,14 +41,14 @@ class SettingsServiceProvider extends ServiceProvider
     {
         /** @var FluentDriver $fluentDriver */
         $fluentDriver = $metadata->driver('fluent', ['mappings' => [
-            new Mappings\SettingMapping,
-            new Mappings\StringSettingMapping,
-            new Mappings\BooleanSettingMapping,
-            new Mappings\IntSettingMapping,
-            new Mappings\FloatSettingMapping,
-            new Mappings\ArraySettingMapping,
-            new Mappings\DateSettingMapping,
-            new Mappings\DateTimeSettingMapping,
+            Mappings\SettingMapping::class,
+            Mappings\StringSettingMapping::class,
+            Mappings\BooleanSettingMapping::class,
+            Mappings\IntSettingMapping::class,
+            Mappings\FloatSettingMapping::class,
+            Mappings\ArraySettingMapping::class,
+            Mappings\DateSettingMapping::class,
+            Mappings\DateTimeSettingMapping::class,
         ]]);
 
         /** @var MappingDriverChain $chain */
