@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 class SyncCommand extends Command
 {
@@ -21,13 +22,13 @@ class SyncCommand extends Command
         $exit = 0;
 
         $existing = $settingsRepository->all();
-        $configured = $config->get('settings');
+        $configured = new Collection($config->get('settings'));
 
-        /** @var array $missing */
-        $missing = Arr::except($configured, $existing->keys());
+        /** @var Collection $missing */
+        $missing = $configured->diffKeys($existing);
 
-        /** @var \Illuminate\Support\Collection|Setting[] $removed */
-        $removed = $existing->except(array_keys($configured));
+        /** @var Collection|Setting[] $removed */
+        $removed = $existing->diffKeys($configured);
 
         foreach ($missing as $key => $setting) {
             try {
@@ -56,9 +57,9 @@ class SyncCommand extends Command
             }
         }
 
-        foreach ($removed as $setting) {
+        foreach ($removed as $key => $setting) {
             if ($this->option('dry-run')) {
-                $this->info(sprintf('Removed [%s].', $setting->getKey()));
+                $this->info("Removed [$key].");
                 $this->info(print_r($setting, true));
             } else {
                 $entityManager->remove($setting);
