@@ -30,6 +30,12 @@ class SettingsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(SettingsRepository::class, DoctrineSettingsRepository::class);
+
+        $this->commands([
+            Commands\SyncCommand::class,
+        ]);
+
+        $this->mergeConfigFrom($this->configPath(), static::PACKAGE);
     }
 
     /**
@@ -67,8 +73,23 @@ class SettingsServiceProvider extends ServiceProvider
         $this->loadViewsFrom("$path/views", static::PACKAGE);
 
         $this->publishes([
-            "$path/lang"  => resource_path('lang/vendor/'.static::PACKAGE),
             "$path/views" => resource_path('views/vendor/'.static::PACKAGE),
-        ]);
+        ], 'views');
+
+        $this->publishes([
+            "$path/lang"  => resource_path('lang/vendor/'.static::PACKAGE),
+        ], 'lang');
+
+        $this->publishes([
+            $this->configPath() => config_path(static::PACKAGE.'.php'),
+        ], 'config');
+    }
+
+    /**
+     * @return string
+     */
+    private function configPath(): string
+    {
+        return dirname(__DIR__).'/config/settings.php';
     }
 }
