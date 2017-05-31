@@ -13,7 +13,7 @@ class ArraySetting extends Setting
 
     public function __toString()
     {
-        return implode(', ', $this->getValue());
+        return implode(', ', $this->getValue() ?: []);
     }
 
     protected function encode($value)
