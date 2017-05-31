@@ -47,7 +47,10 @@ class DoctrineSettingsRepository extends EntityRepository implements SettingsRep
      */
     public function all(): Collection
     {
-        return new Collection($this->findAll());
+        return (new Collection($this->findAll()))
+            ->keyBy(function (Setting $setting) {
+                return $setting->getKey();
+            });
     }
 
     /**
