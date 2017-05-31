@@ -22,7 +22,7 @@ class SyncCommand extends Command
         $exit = 0;
 
         $existing = $settingsRepository->all();
-        $configured = new Collection($config->get('settings'));
+        $configured = new Collection($config->get('settings.settings'));
 
         /** @var Collection $missing */
         $missing = $configured->diffKeys($existing);
