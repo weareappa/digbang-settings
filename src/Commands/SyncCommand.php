@@ -12,7 +12,7 @@ use Illuminate\Support\Arr;
 
 class SyncCommand extends Command
 {
-    protected $signature = 'settings:sync {--n|dry-run : Only show what would be done, without doing it. }';
+    protected $signature = 'settings:sync {--dry-run : Only show what would be done, without doing it. }';
 
     protected $description = 'Sync configured settings with the database.';
 
