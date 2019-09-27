@@ -4,9 +4,9 @@
     "type": "library",
     "require": {
         "php": ">=7.1.0",
-        "illuminate/support": "^5.3",
-        "illuminate/view": "^5.3",
-        "nesbot/carbon": "^1.0",
+        "illuminate/support": "^5.3|^6.0",
+        "illuminate/view": "^5.3|^6.0",
+        "nesbot/carbon": "^2.0",
         "laravel-doctrine/orm": "^1.2"
     },
     "require-dev": {
