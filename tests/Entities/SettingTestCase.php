@@ -84,7 +84,7 @@ abstract class SettingTestCase extends TestCase
      */
     abstract public function onlyInvalidValues(array $examples): array;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->aKey = 'aKey';
         $this->aName = 'aName';
