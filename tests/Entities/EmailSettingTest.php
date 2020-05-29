@@ -4,17 +4,18 @@ declare(strict_types = 1);
 
 namespace Digbang\Settings\Entities;
 
-use Cake\Chronos\Chronos;
 use Illuminate\Support\Arr;
 
-class DateSettingTest extends SettingTestCase
+class EmailSettingTest extends SettingTestCase
 {
     /**
-     * {@inheritdoc}
+     * Filters valid values out of the examples.
+     *
+     * @see SettingTestCase::invalidValues()
      */
     public function onlyInvalidValues(array $examples): array
     {
-        return Arr::except($examples, ['date', 'datetime']);
+        return Arr::except($examples, 'email');
     }
 
     /**
@@ -24,15 +25,7 @@ class DateSettingTest extends SettingTestCase
      */
     protected function aValue()
     {
-        return Chronos::create(
-            2017,
-            5,
-            26,
-            0,
-            0,
-            0,
-            null
-        );
+        return 'foo@bar.com';
     }
 
     /**
@@ -42,15 +35,7 @@ class DateSettingTest extends SettingTestCase
      */
     protected function anotherValue()
     {
-        return Chronos::create(
-            2017,
-            5,
-            27,
-            0,
-            0,
-            0,
-            null
-        );
+        return 'bar@foo.com';
     }
 
     /**
@@ -61,13 +46,7 @@ class DateSettingTest extends SettingTestCase
     protected function createSetting(
         string $key, string $name, string $description, $value, bool $nullable
     ): Setting {
-        return new DateSetting(
-            $key,
-            $name,
-            $description,
-            $value,
-            $nullable
-        );
+        return new EmailSetting(...func_get_args());
     }
 
     /**
@@ -79,11 +58,6 @@ class DateSettingTest extends SettingTestCase
     protected function createMinimalSetting(
         string $key, string $name, string $description, $value
     ): Setting {
-        return new DateSetting(
-            $key,
-            $name,
-            $description,
-            $value
-        );
+        return new EmailSetting(...func_get_args());
     }
 }

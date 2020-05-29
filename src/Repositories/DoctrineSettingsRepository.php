@@ -16,6 +16,7 @@ class DoctrineSettingsRepository extends EntityRepository implements SettingsRep
 
     /**
      * The entity alias used on search queries.
+     *
      * @var string
      */
     protected const ALIAS = 's';
@@ -104,8 +105,6 @@ class DoctrineSettingsRepository extends EntityRepository implements SettingsRep
     /**
      * Parse search filters and add them to the current query.
      *
-     * @param array $filters
-     * @param QueryBuilder $queryBuilder
      * @return void
      */
     protected function parseFilters(array $filters, QueryBuilder $queryBuilder): void

@@ -1,9 +1,10 @@
 <?php
-declare(strict_types=1);
+
+declare(strict_types = 1);
 
 namespace Digbang\Settings\Entities;
 
-use Carbon\Carbon;
+use Cake\Chronos\Chronos;
 use PHPUnit\Framework\TestCase;
 
 abstract class SettingTestCase extends TestCase
@@ -23,67 +24,6 @@ abstract class SettingTestCase extends TestCase
     /** @var array */
     protected $aValue;
 
-    /**
-     * Should return a valid initial value.
-     *
-     * @return mixed
-     */
-    abstract protected function aValue();
-
-    /**
-     * Should return another valid value to test against.
-     *
-     * @return mixed
-     */
-    abstract protected function anotherValue();
-
-    /**
-     * Creates the specific setting based on parent's constructor.
-     *
-     * @param string $key
-     * @param string $name
-     * @param string $description
-     * @param mixed $value
-     * @param bool $nullable
-     *
-     * @return Setting
-     */
-    abstract protected function createSetting(
-        string $key,
-        string $name,
-        string $description,
-        $value,
-        bool $nullable
-    ): Setting;
-
-    /**
-     * Creates the specific setting based on parent's constructor,
-     * without specifying nullability.
-     *
-     * @param string $key
-     * @param string $name
-     * @param string $description
-     * @param mixed $value
-     * @param bool $nullable
-     *
-     * @return Setting
-     */
-    abstract protected function createMinimalSetting(
-        string $key,
-        string $name,
-        string $description,
-        $value
-    ): Setting;
-
-    /**
-     * Filters valid values out of the examples.
-     *
-     * @param array $examples
-     * @return array
-     * @see SettingTestCase::invalidValues()
-     */
-    abstract public function onlyInvalidValues(array $examples): array;
-
     protected function setUp(): void
     {
         $this->aKey = 'aKey';
@@ -98,6 +38,13 @@ abstract class SettingTestCase extends TestCase
             $this->aValue
         );
     }
+
+    /**
+     * Filters valid values out of the examples.
+     *
+     * @see SettingTestCase::invalidValues()
+     */
+    abstract public function onlyInvalidValues(array $examples): array;
 
     /** @test */
     public function it_has_a_key()
@@ -176,13 +123,56 @@ abstract class SettingTestCase extends TestCase
     public function invalidValues(): array
     {
         return $this->onlyInvalidValues([
-            'array'    => [['an', 'array', 'is', 'not', 'valid']],
-            'boolean'  => [false /* bool is not valid */],
-            'date'     => [Carbon::today() /* a date is not valid */],
-            'datetime' => [Carbon::now() /* a datetime is not valid */],
-            'float'    => [3.14 /* a float is not valid */],
-            'int'      => [43 /* an int is not valid */],
-            'string'   => ['A string is not valid'],
+            'array' => [['an', 'array', 'is', 'not', 'valid']],
+            'boolean' => [false /* bool is not valid */],
+            'date' => [Chronos::today() /* a date is not valid */],
+            'datetime' => [Chronos::now() /* a datetime is not valid */],
+            'email' => ['foo@bar.com' /* an email is not valid */],
+            'time' => ['15:18' /* a time is not valid */],
+            'float' => [3.14 /* a float is not valid */],
+            'int' => [43 /* an int is not valid */],
+            'string' => ['A string is not valid'],
+            'url' => ['https://url.is.invalid'],
         ]);
     }
+
+    /**
+     * Should return a valid initial value.
+     *
+     * @return mixed
+     */
+    abstract protected function aValue();
+
+    /**
+     * Should return another valid value to test against.
+     *
+     * @return mixed
+     */
+    abstract protected function anotherValue();
+
+    /**
+     * Creates the specific setting based on parent's constructor.
+     *
+     * @param mixed $value
+     */
+    abstract protected function createSetting(
+        string $key,
+        string $name,
+        string $description,
+        $value,
+        bool $nullable
+    ): Setting;
+
+    /**
+     * Creates the specific setting based on parent's constructor,
+     * without specifying nullability.
+     *
+     * @param mixed $value
+     */
+    abstract protected function createMinimalSetting(
+        string $key,
+        string $name,
+        string $description,
+        $value
+    ): Setting;
 }

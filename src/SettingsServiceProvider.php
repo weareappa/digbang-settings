@@ -38,23 +38,22 @@ class SettingsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom($this->configPath(), static::PACKAGE);
     }
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param MetaDataManager $metadata
-     * @return void
-     */
     protected function doctrineMappings(EntityManagerInterface $entityManager, MetaDataManager $metadata): void
     {
         /** @var FluentDriver $fluentDriver */
         $fluentDriver = $metadata->driver('fluent', ['mappings' => [
             Mappings\SettingMapping::class,
-            Mappings\StringSettingMapping::class,
-            Mappings\BooleanSettingMapping::class,
-            Mappings\IntSettingMapping::class,
-            Mappings\FloatSettingMapping::class,
             Mappings\ArraySettingMapping::class,
+            Mappings\BooleanSettingMapping::class,
             Mappings\DateSettingMapping::class,
             Mappings\DateTimeSettingMapping::class,
+            Mappings\EmailSettingMapping::class,
+            Mappings\EnumSettingMapping::class,
+            Mappings\FloatSettingMapping::class,
+            Mappings\IntSettingMapping::class,
+            Mappings\StringSettingMapping::class,
+            Mappings\TimeSettingMapping::class,
+            Mappings\UrlSettingMapping::class,
         ]]);
 
         /** @var MappingDriverChain $chain */
@@ -62,34 +61,28 @@ class SettingsServiceProvider extends ServiceProvider
         $chain->addDriver($fluentDriver, 'Digbang\Settings');
     }
 
-    /**
-     * @return void
-     */
     protected function resources(): void
     {
-        $path = dirname(__DIR__).'/resources';
+        $path = dirname(__DIR__) . '/resources';
 
         $this->loadTranslationsFrom("$path/lang", static::PACKAGE);
         $this->loadViewsFrom("$path/views", static::PACKAGE);
 
         $this->publishes([
-            "$path/views" => resource_path('views/vendor/'.static::PACKAGE),
+            "$path/views" => resource_path('views/vendor/' . static::PACKAGE),
         ], 'views');
 
         $this->publishes([
-            "$path/lang"  => resource_path('lang/vendor/'.static::PACKAGE),
+            "$path/lang" => resource_path('lang/vendor/' . static::PACKAGE),
         ], 'lang');
 
         $this->publishes([
-            $this->configPath() => config_path(static::PACKAGE.'.php'),
+            $this->configPath() => config_path(static::PACKAGE . '.php'),
         ], 'config');
     }
 
-    /**
-     * @return string
-     */
     private function configPath(): string
     {
-        return dirname(__DIR__).'/config/settings.php';
+        return dirname(__DIR__) . '/config/settings.php';
     }
 }

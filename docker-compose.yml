@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  php:
+    image: digbang/php-dev
+    volumes:
+     - .:/var/www/html
+    networks:
+     - appnet
+networks:
+  appnet:
+    driver: "bridge"

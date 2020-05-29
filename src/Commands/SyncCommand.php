@@ -1,10 +1,13 @@
 <?php
-declare(strict_types=1);
+
+declare(strict_types = 1);
 
 namespace Digbang\Settings\Commands;
 
+use Digbang\Settings\Entities\EnumSetting;
 use Digbang\Settings\Entities\Setting;
 use Digbang\Settings\Repositories\SettingsRepository;
+use Digbang\Utils\Enumerables\Enum;
 use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Config\Repository;
@@ -39,21 +42,21 @@ class SyncCommand extends Command
                     $key,
                     $setting['name'],
                     Arr::get($setting, 'description', ''),
-                    Arr::get($setting, 'default'),
+                    $this->buildDefault(Arr::get($setting, 'type'), Arr::get($setting, 'default')),
                     Arr::get($setting, 'nullable', false)
                 );
 
                 $this->info("Added [$key].");
                 $this->info(print_r($current, true), 'vvv');
 
-                if (!$this->option('dry-run')) {
+                if (! $this->option('dry-run')) {
                     $entityManager->persist($current);
                 }
             } catch (\InvalidArgumentException $exception) {
                 $this->error("Invalid configuration for setting [$key].");
                 $this->error($exception->getMessage(), 'v');
 
-                $exitStatus++;
+                ++$exitStatus;
             }
         }
 
@@ -61,12 +64,12 @@ class SyncCommand extends Command
             $this->warn("Removed [$key].");
             $this->warn(print_r($setting, true), 'vvv');
 
-            if (!$this->option('dry-run')) {
+            if (! $this->option('dry-run')) {
                 $entityManager->remove($setting);
             }
         }
 
-        if (!$this->option('dry-run')) {
+        if (! $this->option('dry-run')) {
             $entityManager->flush();
         }
 
@@ -77,24 +80,39 @@ class SyncCommand extends Command
     {
         $errors = [];
 
-        if (!array_key_exists('type', $setting)) {
+        if (! array_key_exists('type', $setting)) {
             $errors[] = ' - Missing key: [type].';
-        } elseif (!class_exists($setting['type'])) {
+        } elseif (! class_exists($setting['type'])) {
             $errors[] = sprintf(' - Class [%s] does not exist.', $setting['type']);
-        } elseif (!is_subclass_of($setting['type'], Setting::class)) {
+        } elseif (! is_subclass_of($setting['type'], Setting::class)) {
             $errors[] = sprintf(' - Class [%s] must extend [%s].', $setting['type'], Setting::class);
         }
 
-        if (!array_key_exists('name', $setting)) {
+        if (! array_key_exists('name', $setting)) {
             $errors[] = ' - Missing key: [name].';
         }
 
-        if (!array_key_exists('default', $setting) && !Arr::get($setting, 'nullable')) {
+        if (! array_key_exists('default', $setting) && ! Arr::get($setting, 'nullable')) {
             $errors[] = ' - Cannot create a not-null setting without default value.';
         }
 
-        if (!empty($errors)) {
+        if (! empty($errors)) {
             throw new \InvalidArgumentException(implode(PHP_EOL, $errors));
         }
+    }
+
+    private function buildDefault(string $type, $default)
+    {
+        if ($type === EnumSetting::class) {
+            if ($default !== null && ! is_array($default)) {
+                throw new \InvalidArgumentException('Enum setting default value must be an array [classname, value] or null');
+            }
+
+            /** @var Enum $classname */
+            [$classname, $value] = $default;
+            $default = $classname::fromString((string) $value);
+        }
+
+        return $default;
     }
 }

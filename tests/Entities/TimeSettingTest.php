@@ -4,17 +4,16 @@ declare(strict_types = 1);
 
 namespace Digbang\Settings\Entities;
 
-use Cake\Chronos\Chronos;
 use Illuminate\Support\Arr;
 
-class DateSettingTest extends SettingTestCase
+class TimeSettingTest extends SettingTestCase
 {
     /**
      * {@inheritdoc}
      */
     public function onlyInvalidValues(array $examples): array
     {
-        return Arr::except($examples, ['date', 'datetime']);
+        return Arr::except($examples, ['time']);
     }
 
     /**
@@ -24,15 +23,7 @@ class DateSettingTest extends SettingTestCase
      */
     protected function aValue()
     {
-        return Chronos::create(
-            2017,
-            5,
-            26,
-            0,
-            0,
-            0,
-            null
-        );
+        return '20:40';
     }
 
     /**
@@ -42,15 +33,7 @@ class DateSettingTest extends SettingTestCase
      */
     protected function anotherValue()
     {
-        return Chronos::create(
-            2017,
-            5,
-            27,
-            0,
-            0,
-            0,
-            null
-        );
+        return '02:43';
     }
 
     /**
@@ -61,7 +44,7 @@ class DateSettingTest extends SettingTestCase
     protected function createSetting(
         string $key, string $name, string $description, $value, bool $nullable
     ): Setting {
-        return new DateSetting(
+        return new TimeSetting(
             $key,
             $name,
             $description,
@@ -79,7 +62,7 @@ class DateSettingTest extends SettingTestCase
     protected function createMinimalSetting(
         string $key, string $name, string $description, $value
     ): Setting {
-        return new DateSetting(
+        return new TimeSetting(
             $key,
             $name,
             $description,
