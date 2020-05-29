@@ -40,8 +40,6 @@ class BooleanSettingTest extends SettingTestCase
      * Creates the specific setting based on parent's constructor.
      *
      * @param mixed $value
-     *
-     * @return Setting
      */
     protected function createSetting(
         string $key, string $name, string $description, $value, bool $nullable
@@ -60,8 +58,6 @@ class BooleanSettingTest extends SettingTestCase
      * without specifying nullability.
      *
      * @param mixed $value
-     *
-     * @return Setting
      */
     protected function createMinimalSetting(
         string $key, string $name, string $description, $value

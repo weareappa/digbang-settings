@@ -20,7 +20,7 @@ class EnumSetting extends Setting
 
     protected function assertValid($value): void
     {
-        if ($value instanceof Enum) {
+        if (! is_subclass_of($value, Enum::class)) {
             throw new \InvalidArgumentException('Only instances of Digbang\Utils\Enumerables\Enum are allowed');
         }
     }

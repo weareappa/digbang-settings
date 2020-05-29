@@ -4,8 +4,10 @@ declare(strict_types = 1);
 
 namespace Digbang\Settings\Commands;
 
+use Digbang\Settings\Entities\EnumSetting;
 use Digbang\Settings\Entities\Setting;
 use Digbang\Settings\Repositories\SettingsRepository;
+use Digbang\Utils\Enumerables\Enum;
 use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Config\Repository;
@@ -40,7 +42,7 @@ class SyncCommand extends Command
                     $key,
                     $setting['name'],
                     Arr::get($setting, 'description', ''),
-                    Arr::get($setting, 'default'),
+                    $this->buildDefault(Arr::get($setting, 'type'), Arr::get($setting, 'default')),
                     Arr::get($setting, 'nullable', false)
                 );
 
@@ -97,5 +99,20 @@ class SyncCommand extends Command
         if (! empty($errors)) {
             throw new \InvalidArgumentException(implode(PHP_EOL, $errors));
         }
+    }
+
+    private function buildDefault(string $type, $default)
+    {
+        if ($type === EnumSetting::class) {
+            if ($default !== null && ! is_array($default)) {
+                throw new \InvalidArgumentException('Enum setting default value must be an array [classname, value] or null');
+            }
+
+            /** @var Enum $classname */
+            [$classname, $value] = $default;
+            $default = $classname::fromString((string) $value);
+        }
+
+        return $default;
     }
 }

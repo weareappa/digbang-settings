@@ -11,8 +11,6 @@ class IntSettingTest extends SettingTestCase
     /**
      * Filters valid values out of the examples.
      *
-     * @return array
-     *
      * @see SettingTestCase::invalidValues()
      */
     public function onlyInvalidValues(array $examples): array
@@ -44,8 +42,6 @@ class IntSettingTest extends SettingTestCase
      * Creates the specific setting based on parent's constructor.
      *
      * @param mixed $value
-     *
-     * @return Setting
      */
     protected function createSetting(
         string $key, string $name, string $description, $value, bool $nullable
@@ -58,8 +54,6 @@ class IntSettingTest extends SettingTestCase
      * without specifying nullability.
      *
      * @param mixed $value
-     *
-     * @return Setting
      */
     protected function createMinimalSetting(
         string $key, string $name, string $description, $value

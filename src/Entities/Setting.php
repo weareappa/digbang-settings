@@ -34,33 +34,21 @@ abstract class Setting
         return (string) $this->getValue();
     }
 
-    /**
-     * @return string
-     */
     public function getKey(): string
     {
         return $this->key;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return bool
-     */
     public function isNullable(): bool
     {
         return $this->nullable;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
@@ -68,6 +56,7 @@ abstract class Setting
 
     /**
      * @param mixed|null $value
+     *
      * @throws \InvalidArgumentException
      */
     public function setValue($value): void
