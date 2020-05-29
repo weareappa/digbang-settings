@@ -1,4 +1,5 @@
 <?php
+
 return [
     'settings' => [
         /*
@@ -13,12 +14,12 @@ return [
              * Check all available settings in the Digbang\Settings\Entities namespace or
              * write your own!
              */
-            'type'       => Digbang\Settings\Entities\StringSetting::class,
+            'type' => Digbang\Settings\Entities\StringSetting::class,
 
             /*
              * A name for the setting.
              */
-            'name'        => 'Example',
+            'name' => 'Example',
 
             /*
              * A description for the setting, so that admins can understand it better.
@@ -28,13 +29,13 @@ return [
             /*
              * A default value to be used when creating the setting.
              */
-            'default'     => 'Default value, change me!',
+            'default' => 'Default value, change me!',
 
             /*
              * Whether this setting is nullable or not.
              * Not-null settings require a default value.
              */
-            'nullable'    => false,
+            'nullable' => false,
         ],
-    ]
+    ],
 ];

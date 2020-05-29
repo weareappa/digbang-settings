@@ -1,5 +1,6 @@
 <?php
-declare(strict_types=1);
+
+declare(strict_types = 1);
 
 namespace Digbang\Settings\Entities;
 
@@ -7,6 +8,14 @@ use Illuminate\Support\Arr;
 
 class BooleanSettingTest extends SettingTestCase
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function onlyInvalidValues(array $examples): array
+    {
+        return Arr::except($examples, 'boolean');
+    }
+
     /**
      * Should return a valid initial value.
      *
@@ -30,11 +39,7 @@ class BooleanSettingTest extends SettingTestCase
     /**
      * Creates the specific setting based on parent's constructor.
      *
-     * @param string $key
-     * @param string $name
-     * @param string $description
      * @param mixed $value
-     * @param bool $nullable
      *
      * @return Setting
      */
@@ -54,11 +59,7 @@ class BooleanSettingTest extends SettingTestCase
      * Creates the specific setting based on parent's constructor,
      * without specifying nullability.
      *
-     * @param string $key
-     * @param string $name
-     * @param string $description
      * @param mixed $value
-     * @param bool $nullable
      *
      * @return Setting
      */
@@ -71,13 +72,5 @@ class BooleanSettingTest extends SettingTestCase
             $description,
             $value
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function onlyInvalidValues(array $examples): array
-    {
-        return Arr::except($examples,'boolean');
     }
 }

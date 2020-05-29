@@ -4,24 +4,24 @@ namespace Digbang\Settings\Entities;
 
 class BooleanSetting extends Setting
 {
-    protected function assertValid($value): void
+    public function __toString()
     {
-        if (!is_bool($value)) {
-            throw new \InvalidArgumentException;
-        }
+        return (bool) $this->value ? '✔' : '❌';
     }
 
     public function getValue(): ?bool
     {
-        if($this->isNullable() && $this->value === null) {
+        if ($this->isNullable() && $this->value === null) {
             return null;
         }
 
-        return (bool)$this->value;
+        return (bool) $this->value;
     }
 
-    public function __toString()
+    protected function assertValid($value): void
     {
-        return (bool)$this->value ? '✔' : '❌';
+        if (! is_bool($value)) {
+            throw new \InvalidArgumentException;
+        }
     }
 }

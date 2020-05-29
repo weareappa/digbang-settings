@@ -1,13 +1,22 @@
 <?php
-declare(strict_types=1);
+
+declare(strict_types = 1);
 
 namespace Digbang\Settings\Entities;
 
-use Carbon\Carbon;
+use Cake\Chronos\Chronos;
 use Illuminate\Support\Arr;
 
 class DateSettingTest extends SettingTestCase
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function onlyInvalidValues(array $examples): array
+    {
+        return Arr::except($examples, ['date', 'datetime']);
+    }
+
     /**
      * Should return a valid initial value.
      *
@@ -15,7 +24,7 @@ class DateSettingTest extends SettingTestCase
      */
     protected function aValue()
     {
-        return Carbon::create(
+        return Chronos::create(
             2017,
             5,
             26,
@@ -33,7 +42,7 @@ class DateSettingTest extends SettingTestCase
      */
     protected function anotherValue()
     {
-        return Carbon::create(
+        return Chronos::create(
             2017,
             5,
             27,
@@ -47,13 +56,7 @@ class DateSettingTest extends SettingTestCase
     /**
      * Creates the specific setting based on parent's constructor.
      *
-     * @param string $key
-     * @param string $name
-     * @param string $description
      * @param mixed $value
-     * @param bool $nullable
-     *
-     * @return Setting
      */
     protected function createSetting(
         string $key, string $name, string $description, $value, bool $nullable
@@ -71,13 +74,7 @@ class DateSettingTest extends SettingTestCase
      * Creates the specific setting based on parent's constructor,
      * without specifying nullability.
      *
-     * @param string $key
-     * @param string $name
-     * @param string $description
      * @param mixed $value
-     * @param bool $nullable
-     *
-     * @return Setting
      */
     protected function createMinimalSetting(
         string $key, string $name, string $description, $value
@@ -88,13 +85,5 @@ class DateSettingTest extends SettingTestCase
             $description,
             $value
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function onlyInvalidValues(array $examples): array
-    {
-        return Arr::except($examples, ['date', 'datetime']);
     }
 }

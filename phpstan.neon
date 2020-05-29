@@ -1,0 +1,20 @@
+parameters:
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        - '#Call to an undefined static method Illuminate\\Support\\Facades\\.*#'
+        - '#Method Mockery\\MockInterface::shouldReceive\(\).*#'
+        - '#.+Mockery\\MockInterface.+#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::method\(\)#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::expects\(\)#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::shouldReceive\(\)#'
+        - '#Access to an undefined property PHPUnit_Framework_MockObject_MockObject::\$[a-zA-Z0-9_]+#'
+        - '#Call to an undefined method PHPUnit_Framework_MockObject_MockObject::[a-zA-Z0-9_]+\(\)#'
+        - '#Cannot access offset 0 on [a-zA-Z0-9\\_]+#'
+        - '#Call to an undefined method LaravelDoctrine\\Fluent\\Relations\\ManyToMany::addInverseJoinColumn().#'
+    bootstrap: vendor/autoload.php
+    excludes_analyse:
+
+includes:
+        - vendor/phpstan/phpstan-phpunit/extension.neon
+        - vendor/phpstan/phpstan-phpunit/rules.neon
+        - vendor/phpstan/phpstan-mockery/extension.neon

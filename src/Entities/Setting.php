@@ -13,7 +13,7 @@ abstract class Setting
     /** @var string */
     protected $description;
 
-    /** @var string */
+    /** @var string|null */
     protected $value;
 
     /** @var bool */
@@ -27,6 +27,11 @@ abstract class Setting
         $this->description = $description;
 
         $this->setValue($value);
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getValue();
     }
 
     /**
@@ -62,6 +67,7 @@ abstract class Setting
     }
 
     /**
+     * @param mixed|null $value
      * @throws \InvalidArgumentException
      */
     public function setValue($value): void
@@ -78,11 +84,6 @@ abstract class Setting
         $this->value = $this->encode($value);
     }
 
-    public function __toString()
-    {
-        return (string) $this->getValue();
-    }
-
     public function getValue()
     {
         if ($this->value === null && $this->isNullable()) {
@@ -95,14 +96,7 @@ abstract class Setting
     /**
      * @throws \InvalidArgumentException
      */
-    protected abstract function assertValid($value): void;
-
-    private function assertNullable($value)
-    {
-        if ($value === null && !$this->isNullable()) {
-            throw new \InvalidArgumentException('This setting does not allow null values.');
-        }
-    }
+    abstract protected function assertValid($value): void;
 
     protected function encode($value)
     {
@@ -112,5 +106,12 @@ abstract class Setting
     protected function decode($value)
     {
         return $value;
+    }
+
+    private function assertNullable($value)
+    {
+        if ($value === null && ! $this->isNullable()) {
+            throw new \InvalidArgumentException('This setting does not allow null values.');
+        }
     }
 }

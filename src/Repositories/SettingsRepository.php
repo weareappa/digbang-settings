@@ -1,4 +1,5 @@
 <?php
+
 namespace Digbang\Settings\Repositories;
 
 use Digbang\Settings\Entities\Setting;
@@ -10,7 +11,6 @@ interface SettingsRepository
     /**
      * Get a setting by key.
      *
-     * @param string $key
      * @return Setting
      */
     public function get(string $key): Setting;
@@ -18,7 +18,6 @@ interface SettingsRepository
     /**
      * Gets the settings value directly.
      *
-     * @param string $key
      * @return mixed
      */
     public function getValue(string $key);
@@ -33,8 +32,8 @@ interface SettingsRepository
     /**
      * Set a setting's value directly.
      *
-     * @param string $key
      * @param mixed $value
+     *
      * @return Setting
      */
     public function setValue(string $key, $value): Setting;
@@ -42,10 +41,8 @@ interface SettingsRepository
     /**
      * Search for settings by key or name.
      *
-     * @param array $filters
-     * @param array $orderBy
      * @param int $perPage
-     * @param int $page
+     *
      * @return Setting[]|LengthAwarePaginator
      */
     public function search(array $filters, array $orderBy, ?int $perPage = null, int $page = 1);

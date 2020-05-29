@@ -6,18 +6,14 @@ namespace Digbang\Settings\Entities;
 
 use Illuminate\Support\Arr;
 
-class StringSettingTest extends SettingTestCase
+class TimeSettingTest extends SettingTestCase
 {
     /**
-     * Filters valid values out of the examples.
-     *
-     * @return array
-     *
-     * @see SettingTestCase::invalidValues()
+     * {@inheritdoc}
      */
     public function onlyInvalidValues(array $examples): array
     {
-        return Arr::except($examples, ['string', 'email', 'url', 'time']);
+        return Arr::except($examples, ['time']);
     }
 
     /**
@@ -27,7 +23,7 @@ class StringSettingTest extends SettingTestCase
      */
     protected function aValue()
     {
-        return 'a valid value';
+        return '20:40';
     }
 
     /**
@@ -37,20 +33,24 @@ class StringSettingTest extends SettingTestCase
      */
     protected function anotherValue()
     {
-        return 'another valid value';
+        return '02:43';
     }
 
     /**
      * Creates the specific setting based on parent's constructor.
      *
      * @param mixed $value
-     *
-     * @return Setting
      */
     protected function createSetting(
         string $key, string $name, string $description, $value, bool $nullable
     ): Setting {
-        return new StringSetting(...func_get_args());
+        return new TimeSetting(
+            $key,
+            $name,
+            $description,
+            $value,
+            $nullable
+        );
     }
 
     /**
@@ -58,12 +58,15 @@ class StringSettingTest extends SettingTestCase
      * without specifying nullability.
      *
      * @param mixed $value
-     *
-     * @return Setting
      */
     protected function createMinimalSetting(
         string $key, string $name, string $description, $value
     ): Setting {
-        return new StringSetting(...func_get_args());
+        return new TimeSetting(
+            $key,
+            $name,
+            $description,
+            $value
+        );
     }
 }

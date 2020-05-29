@@ -2,28 +2,28 @@
 
 namespace Digbang\Settings\Entities;
 
-use Carbon\Carbon;
+use Cake\Chronos\Chronos;
 
 class DateTimeSetting extends Setting
 {
-    protected function assertValid($value): void
+    public function __toString()
     {
-        if (!$value instanceof Carbon) {
-            throw new \InvalidArgumentException;
-        }
+        return $this->value === null ? '-' : $this->getValue()->format('d/m/Y H:i:s');
     }
 
-    public function getValue(): ?Carbon
+    public function getValue(): ?Chronos
     {
-        if($this->isNullable() && $this->value === null) {
+        if ($this->isNullable() && $this->value === null) {
             return null;
         }
 
-        return Carbon::parse($this->value);
+        return Chronos::parse($this->value);
     }
 
-    public function __toString()
+    protected function assertValid($value): void
     {
-        return  $this->value === null ? '-' : $this->getValue()->format('d/m/Y H:i:s');
+        if (! $value instanceof Chronos) {
+            throw new \InvalidArgumentException;
+        }
     }
 }

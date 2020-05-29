@@ -2,7 +2,7 @@
 
 namespace Digbang\Settings\Entities;
 
-class StringSetting extends Setting
+class EmailSetting extends Setting
 {
     public function getValue(): ?string
     {
@@ -15,7 +15,7 @@ class StringSetting extends Setting
 
     protected function assertValid($value): void
     {
-        if (! is_string($value)) {
+        if (! filter_var($value, FILTER_VALIDATE_EMAIL)) {
             throw new \InvalidArgumentException;
         }
     }
