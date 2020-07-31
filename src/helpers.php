@@ -3,13 +3,14 @@
 if (! function_exists('settings')) {
 
     /**
+     * @param string $key
      * @return \Digbang\Settings\Repositories\SettingsRepository
      */
-    function settings(): \Digbang\Settings\Repositories\SettingsRepository
+    function setting(string $key)
     {
         /** @var \Digbang\Settings\Repositories\SettingsRepository $repository */
         $repository = app(\Digbang\Settings\Repositories\SettingsRepository::class);
 
-        return $repository;
+        return $repository->getValue($key);
     }
 }
