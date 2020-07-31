@@ -1,6 +1,6 @@
 <?php
 
-if (! function_exists('settings')) {
+if (! function_exists('setting')) {
 
     /**
      * @param string $key
