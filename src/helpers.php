@@ -4,7 +4,7 @@ if (! function_exists('setting')) {
 
     /**
      * @param string $key
-     * @return \Digbang\Settings\Repositories\SettingsRepository
+     * @return mixed
      */
     function setting(string $key)
     {
