@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'cache' => [
+        'enabled' => env('SETTINGS_CACHE_ENABLED', true),
+    ],
     'settings' => [
         /*
          * This is an example setting. These settings will be used by the settings:sync command
