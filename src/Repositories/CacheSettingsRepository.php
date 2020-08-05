@@ -74,9 +74,11 @@ class CacheSettingsRepository implements SettingsRepository
      */
     public function setValue(string $key, $value): Setting
     {
-        $this->settingsRepository->setValue($key, $value);
+        $setting = $this->settingsRepository->setValue($key, $value);
 
         $this->put($key, $value);
+
+        return $setting;
     }
 
     private function put(string $key, $value): void
