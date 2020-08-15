@@ -2,8 +2,6 @@
 
 namespace Digbang\Settings\Entities;
 
-use Cake\Chronos\Chronos;
-
 class DateTimeSetting extends Setting
 {
     public function __toString()
@@ -11,18 +9,18 @@ class DateTimeSetting extends Setting
         return $this->value === null ? '-' : $this->getValue()->format('d/m/Y H:i:s');
     }
 
-    public function getValue(): ?Chronos
+    public function getValue(): ?\DateTimeInterface
     {
         if ($this->isNullable() && $this->value === null) {
             return null;
         }
 
-        return Chronos::parse($this->value);
+        return \DateTime::createFromFormat('Y-m-d H:i:s', $this->value);
     }
 
     protected function assertValid($value): void
     {
-        if (! $value instanceof Chronos) {
+        if (! $value instanceof \DateTimeInterface) {
             throw new \InvalidArgumentException;
         }
     }
