@@ -15,7 +15,7 @@ class DateSetting extends Setting
             return null;
         }
 
-        return \DateTime::createFromFormat('Y-m-d H:i:s', $this->value)->setTime(0,0,0);
+        return \DateTime::createFromFormat('Y-m-d H:i:s', $this->value)->setTime(0, 0, 0);
     }
 
     protected function assertValid($value): void

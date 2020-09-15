@@ -1,9 +1,7 @@
 <?php
 
 if (! function_exists('setting')) {
-
     /**
-     * @param string $key
      * @return mixed
      */
     function setting(string $key)

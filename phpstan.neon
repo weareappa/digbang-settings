@@ -10,7 +10,7 @@ parameters:
         - '#Access to an undefined property PHPUnit_Framework_MockObject_MockObject::\$[a-zA-Z0-9_]+#'
         - '#Call to an undefined method PHPUnit_Framework_MockObject_MockObject::[a-zA-Z0-9_]+\(\)#'
         - '#Cannot access offset 0 on [a-zA-Z0-9\\_]+#'
-        - '#Call to an undefined method LaravelDoctrine\\Fluent\\Relations\\ManyToMany::addInverseJoinColumn().#'
+        - '#Call to an undefined method LaravelDoctrine\\Fluent\\Relations\\ManyToMany::addInverseJoinColumn\(\)#'
     bootstrap: vendor/autoload.php
     excludes_analyse:
 
