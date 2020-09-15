@@ -10,8 +10,6 @@ interface SettingsRepository
 {
     /**
      * Get a setting by key.
-     *
-     * @return Setting
      */
     public function get(string $key): Setting;
 
@@ -33,8 +31,6 @@ interface SettingsRepository
      * Set a setting's value directly.
      *
      * @param mixed $value
-     *
-     * @return Setting
      */
     public function setValue(string $key, $value): Setting;
 

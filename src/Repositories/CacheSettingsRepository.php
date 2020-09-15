@@ -24,7 +24,7 @@ class CacheSettingsRepository implements SettingsRepository
     /**
      * {@inheritdoc}
      *
-    * @throws EntityNotFoundException
+     * @throws EntityNotFoundException
      */
     public function get(string $key): Setting
     {

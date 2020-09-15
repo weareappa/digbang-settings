@@ -104,8 +104,6 @@ class DoctrineSettingsRepository extends EntityRepository implements SettingsRep
 
     /**
      * Parse search filters and add them to the current query.
-     *
-     * @return void
      */
     protected function parseFilters(array $filters, QueryBuilder $queryBuilder): void
     {
