@@ -6,8 +6,8 @@
         "php": "^7.3",
         "cakephp/chronos": "^1.1|^2.0",
         "digbang/utils": "^1.4",
-        "illuminate/support": "^8.0",
-        "illuminate/view": "^8.0",
+        "illuminate/support": "^7.0|^8.0",
+        "illuminate/view": "^7.0|^8.0",
         "laravel-doctrine/orm": "^1.7"
     },
     "require-dev": {
