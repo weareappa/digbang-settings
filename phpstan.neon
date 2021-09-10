@@ -13,6 +13,7 @@ parameters:
         - '#Call to an undefined method LaravelDoctrine\\Fluent\\Relations\\ManyToMany::addInverseJoinColumn\(\)#'
     bootstrap: vendor/autoload.php
     excludes_analyse:
+        - stubs/*
 
 includes:
         - vendor/phpstan/phpstan-phpunit/extension.neon
