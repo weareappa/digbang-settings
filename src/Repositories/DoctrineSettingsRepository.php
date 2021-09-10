@@ -118,5 +118,10 @@ class DoctrineSettingsRepository extends EntityRepository implements SettingsRep
             $queryBuilder->andWhere("LOWER($alias.name) LIKE LOWER(:name)");
             $queryBuilder->setParameter('name', "%$name%");
         }
+
+        if ($description = array_get($filters, 'description')) {
+            $queryBuilder->andWhere("LOWER($alias.description) LIKE LOWER(:description)");
+            $queryBuilder->setParameter('description', "%$description%");
+        }
     }
 }
