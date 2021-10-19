@@ -14,6 +14,13 @@ interface SettingsRepository
     public function get(string $key): Setting;
 
     /**
+     * List settings by keys. (Exact matching)
+     *
+     * @return Setting[]
+     */
+    public function list(array $keys);
+
+    /**
      * Gets the settings value directly.
      *
      * @return mixed
@@ -35,9 +42,7 @@ interface SettingsRepository
     public function setValue(string $key, $value): Setting;
 
     /**
-     * Search for settings by key or name.
-     *
-     * @param int $perPage
+     * Search for settings by key, name or description.
      *
      * @return Setting[]|LengthAwarePaginator
      */
