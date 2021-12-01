@@ -34,6 +34,14 @@ class CacheSettingsRepository implements SettingsRepository
     /**
      * {@inheritdoc}
      */
+    public function list(array $keys)
+    {
+        return $this->settingsRepository->list($keys);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function all(): Collection
     {
         return $this->settingsRepository->all();
