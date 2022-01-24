@@ -6,6 +6,7 @@ use Digbang\Settings\Repositories\CacheSettingsRepository;
 use Digbang\Settings\Repositories\DoctrineSettingsRepository;
 use Digbang\Settings\Repositories\SettingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
 use LaravelDoctrine\Fluent\FluentDriver;
@@ -16,9 +17,12 @@ class SettingsServiceProvider extends ServiceProvider
 {
     private const PACKAGE = 'settings';
 
-    public function boot(EntityManagerInterface $entityManager, MetaDataManager $metadata, BladeCompiler $blade)
+    public function boot(ManagerRegistry $managerRegistry, MetaDataManager $metadata, BladeCompiler $blade)
     {
-        $this->doctrineMappings($entityManager, $metadata);
+        /** @var EntityManager $entityManager */
+        foreach ($managerRegistry->getManagers() as $entityManager) {
+            $this->doctrineMappings($entityManager, $metadata);
+        }
         $this->resources();
 
         $blade->directive('setting', function ($key) {
