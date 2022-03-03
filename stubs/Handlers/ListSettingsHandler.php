@@ -21,8 +21,8 @@ class ListSettingsHandler extends Handler implements RouteDefiner
      * @var array
      */
     private $sortings = [
-        'key' => 's.key',
-        'name' => 's.name',
+        'key' => 'key',
+        'name' => 'name',
     ];
 
     public function __invoke(SettingsRepository $repository, Request $request)
