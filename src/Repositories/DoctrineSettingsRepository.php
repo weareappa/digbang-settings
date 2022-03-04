@@ -96,7 +96,7 @@ class DoctrineSettingsRepository extends EntityRepository implements SettingsRep
         }
 
         foreach ($orderBy as $column => $sense) {
-            $queryBuilder->orderBy($alias.$column, $sense ?: 'asc');
+            $queryBuilder->orderBy("$alias.$column", $sense ?: 'asc');
         }
 
         $query = $queryBuilder->getQuery();
