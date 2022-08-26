@@ -16,7 +16,15 @@ use Illuminate\Support\Collection;
 
 class SyncCommand extends Command
 {
-    protected $signature = 'settings:sync {--dry-run : Only show what would be done, without doing it. }';
+    private const NAME = 'name';
+    private const DESCRIPTION = 'description';
+    private const NULLABLE = 'nullable';
+    private const TYPE = 'type';
+    private const DEFAULT = 'default';
+
+    protected $signature = 'settings:sync 
+        {--dry-run : Only show what would be done, without doing it. }
+        {--update-descriptors : Will update name and description fields from the config file. }';
 
     protected $description = 'Sync configured settings with the database.';
 
@@ -38,12 +46,12 @@ class SyncCommand extends Command
                 $this->validConfig($setting);
 
                 /** @var Setting $current */
-                $current = new $setting['type'](
+                $current = new $setting[self::TYPE](
                     $key,
-                    $setting['name'],
-                    Arr::get($setting, 'description', ''),
-                    $this->buildDefault(Arr::get($setting, 'type'), Arr::get($setting, 'default')),
-                    Arr::get($setting, 'nullable', false)
+                    $setting[self::NAME],
+                    Arr::get($setting, self::DESCRIPTION, ''),
+                    $this->buildDefault(Arr::get($setting, self::TYPE), Arr::get($setting, self::DEFAULT)),
+                    Arr::get($setting, self::NULLABLE, false)
                 );
 
                 $this->info("Added [$key].");
@@ -56,7 +64,7 @@ class SyncCommand extends Command
                 $this->error("Invalid configuration for setting [$key].");
                 $this->error($exception->getMessage(), 'v');
 
-                ++$exitStatus;
+                $exitStatus = 1;
             }
         }
 
@@ -66,6 +74,32 @@ class SyncCommand extends Command
 
             if (! $this->option('dry-run')) {
                 $entityManager->remove($setting);
+            }
+
+            $existing->forget($key);
+        }
+
+        if ($this->option('update-descriptors')) {
+            /** @var Setting $setting */
+            foreach ($existing as $setting) {
+                try {
+                    $key = $setting->getKey();
+                    $configuredSetting = $configured[$key];
+
+                    $this->validConfig($configuredSetting);
+
+                    if (! $this->option('dry-run')) {
+                        $setting->setName($configuredSetting[self::NAME]);
+                        $setting->setDescription($configuredSetting[self::DESCRIPTION]);
+                    }
+
+                    $this->info("Updated [$key] descriptors.");
+                } catch (\InvalidArgumentException $exception) {
+                    $this->error("Invalid configuration for setting [$key].");
+                    $this->error($exception->getMessage(), 'v');
+
+                    $exitStatus = 1;
+                }
             }
         }
 
@@ -80,19 +114,19 @@ class SyncCommand extends Command
     {
         $errors = [];
 
-        if (! array_key_exists('type', $setting)) {
+        if (! array_key_exists(self::TYPE, $setting)) {
             $errors[] = ' - Missing key: [type].';
-        } elseif (! class_exists($setting['type'])) {
-            $errors[] = sprintf(' - Class [%s] does not exist.', $setting['type']);
-        } elseif (! is_subclass_of($setting['type'], Setting::class)) {
-            $errors[] = sprintf(' - Class [%s] must extend [%s].', $setting['type'], Setting::class);
+        } elseif (! class_exists($setting[self::TYPE])) {
+            $errors[] = sprintf(' - Class [%s] does not exist.', $setting[self::TYPE]);
+        } elseif (! is_subclass_of($setting[self::TYPE], Setting::class)) {
+            $errors[] = sprintf(' - Class [%s] must extend [%s].', $setting[self::TYPE], Setting::class);
         }
 
-        if (! array_key_exists('name', $setting)) {
+        if (! array_key_exists(self::NAME, $setting)) {
             $errors[] = ' - Missing key: [name].';
         }
 
-        if (! array_key_exists('default', $setting) && ! Arr::get($setting, 'nullable')) {
+        if (! array_key_exists(self::DEFAULT, $setting) && ! Arr::get($setting, self::NULLABLE)) {
             $errors[] = ' - Cannot create a not-null setting without default value.';
         }
 
