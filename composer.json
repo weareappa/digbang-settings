@@ -1,11 +1,11 @@
 {
-    "name": "digbang/settings",
+    "name": "weareappa/settings",
     "description": "A model for data-driven settings.",
     "type": "library",
     "require": {
         "php": "^7.3",
         "cakephp/chronos": "^1.1|^2.0",
-        "digbang/utils": "^1.4",
+        "weareappa/utils": "^1.8.2",
         "illuminate/support": "^7.0|^8.0",
         "illuminate/view": "^7.0|^8.0",
         "laravel-doctrine/orm": "^1.6"
@@ -37,5 +37,12 @@
         "stan": "php -d memory_limit=500M ./vendor/bin/phpstan analyse -l 3 -c phpstan.neon src config resources tests",
         "test": "./vendor/bin/phpunit"
     },
-    "license": "MIT"
+    "license": "MIT",
+    "repositories": [
+        { 
+                "url": "git@github.com:weareappa/digbang-utils.git",
+                "type": "vcs",
+                "branch": "compatible-1-8-1" 
+        }
+    ]    
 }
